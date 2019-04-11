@@ -15,7 +15,8 @@ var app = new Vue({
     validUsers: [ "XWnYBJEDhid9GMnHo1xfcDq8t7j2", "SpXjWR3B5Ch03jBHYmuk3naAtj63" ],
     adminUser: false,
     userID: false,
-    newMessage: ""
+    newMessage: "",
+    sender: ""
   },
   computed: {
     loggedIn: function() {
@@ -33,6 +34,7 @@ var app = new Vue({
         .then(function(result) {
           app.userID = result.user.uid;
           app.adminUser = result.user.uid === "XWnYBJEDhid9GMnHo1xfcDq8t7j2";
+          this.getUser();
         }).catch(function(error) {
           console.log(error);
         });
@@ -47,7 +49,12 @@ var app = new Vue({
     },
     updateMessage: function(event) {
       let date = new Date().toISOString();
-      let content = { date: date, "message": this.newMessage.trim() };
+      let content = { 
+        title: date,
+        messageBody: this.newMessage.trim(),
+        recipient: "5cac3053bcf76a16432764e8",
+        sender: this.sender.id
+      };
       fetch("/message/new",
         {
           method: "POST",
@@ -66,10 +73,17 @@ var app = new Vue({
         app.message = data;
         app.newestMessageOrder = data.order;
       })
+    },    
+    getUser: async function() {
+      fetch("/user/" + this.userID).then(async function(data) {
+        data = await data.json();
+        app.sender = data;
+      })
     },
     previousMessage: async function() {
       fetch("/message/previous/" + this.message.order).then(async function(data) {
         data = await data.json();
+        if (data.message === "There are no more messages.") return false;
         app.message = data;
       })
     },
@@ -81,13 +95,14 @@ var app = new Vue({
     },
   },
   beforeMount(){
-    this.getMessage()
+    this.getMessage();
   },
 });
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     app.userID = user.uid;
+    app.getUser();
     app.adminUser = user.uid === "XWnYBJEDhid9GMnHo1xfcDq8t7j2";
   } 
 });
