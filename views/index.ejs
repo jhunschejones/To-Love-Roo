@@ -36,7 +36,7 @@
         <br/>
         <textarea v-model="newMessage" name="newMessage" placeholder="New message here..." class="form-control" rows="5"></textarea>
         <small class="text-secondary ml-1 mt-1">Characters remaining: {{ 500 - newMessage.length }}</small>
-        <button class="btn btn-sm btn-primary mt-1 float-right" v-on:click="updateMessage">Submit</button>
+        <button class="btn btn-sm btn-primary mt-1 float-right" v-on:click="addMessage">Submit</button>
       </div>
     </div>
 

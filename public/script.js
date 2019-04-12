@@ -47,7 +47,7 @@ var app = new Vue({
         console.log(error);
       })
     },
-    updateMessage: function(event) {
+    addMessage: function(event) {
       let date = new Date().toISOString();
       let content = { 
         title: date,
@@ -55,7 +55,7 @@ var app = new Vue({
         recipient: "5cac3053bcf76a16432764e8",
         sender: this.sender.id
       };
-      fetch("/message/new",
+      fetch("/api/v1/message/new",
         {
           method: "POST",
           mode: "same-origin",
@@ -68,27 +68,27 @@ var app = new Vue({
       })
     },
     getMessage: async function() {
-      fetch("/message/latest").then(async function(data) {
+      fetch("/api/v1/message/latest").then(async function(data) {
         data = await data.json();
         app.message = data;
         app.newestMessageOrder = data.order;
       })
     },    
     getUser: async function() {
-      fetch("/user/" + this.userID).then(async function(data) {
+      fetch("/api/v1/user/" + this.userID).then(async function(data) {
         data = await data.json();
         app.sender = data;
       })
     },
     previousMessage: async function() {
-      fetch("/message/previous/" + this.message.order).then(async function(data) {
+      fetch("/api/v1/message/previous/" + this.message.order).then(async function(data) {
         data = await data.json();
         if (data.message === "There are no more messages.") return false;
         app.message = data;
       })
     },
     randomMessage: async function() {
-      fetch("/message/random/").then(async function(data) {
+      fetch("/api/v1/message/random/").then(async function(data) {
         data = await data.json();
         app.message = data;
       })
