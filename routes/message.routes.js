@@ -4,12 +4,12 @@ const Message = require('../models/message.model');
 
 router.get('/latest', function(req, res) {
   Message.findOne().sort({createdAt: -1}).exec(function (err, message) {
-    if (err) { 
+    if (err) {
       console.log(err);
-    } else if (!message || message.length === 0) { 
+    } else if (!message || message.length === 0) {
       res.send({"message" : 'There are no messages on file.'});
-    } else { 
-      res.send(message); 
+    } else {
+      res.send(message);
     }
   });
 });

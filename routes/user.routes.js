@@ -19,12 +19,12 @@ router.post('/new', function(req, res) {
 
 router.get('/:id', function(req, res) {
   User.findOne({ googleUserID: req.params.id }, function (err, user) {
-    if (err) { 
+    if (err) {
       console.log(err);
-    } else if (!user || user.length === 0) { 
+    } else if (!user || user.length === 0) {
       res.send({"message" : `There are no users on file with ID '${req.params.id}'`});
-    } else { 
-      res.send(user); 
+    } else {
+      res.send(user);
     }
   })
 });

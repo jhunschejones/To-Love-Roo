@@ -49,7 +49,7 @@ var app = new Vue({
     },
     addMessage: function(event) {
       let date = new Date().toISOString();
-      let content = { 
+      let content = {
         title: date,
         messageBody: this.newMessage.trim(),
         recipient: "5cac3053bcf76a16432764e8",
@@ -73,7 +73,7 @@ var app = new Vue({
         app.message = data;
         app.newestMessageOrder = data.order;
       })
-    },    
+    },
     getUser: async function() {
       fetch("/api/v1/user/" + this.userID).then(async function(data) {
         data = await data.json();
@@ -104,5 +104,5 @@ firebase.auth().onAuthStateChanged((user) => {
     app.userID = user.uid;
     app.getUser();
     app.adminUser = user.uid === "XWnYBJEDhid9GMnHo1xfcDq8t7j2";
-  } 
+  }
 });
